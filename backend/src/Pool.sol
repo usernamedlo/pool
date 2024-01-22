@@ -24,47 +24,47 @@ contract Pool is Ownable {
         goal = _goal;
     }
 
-    function contribute() public payable {
-        if(block.timestamp >= end) {
+    function contribute() external payable {
+        if (block.timestamp >= end) {
             revert CollectIsFinished();
         }
-        if(msg.value == 0) {
+        if (msg.value == 0) {
             revert NotEnoughFunds();
         }
-        
+
         contributions[msg.sender] += msg.value;
         totalCollected += msg.value;
 
         emit Contribute(msg.sender, msg.value);
     }
 
-    function withdraw() public onlyOwner {
-        if(block.timestamp < end || totalCollected < goal) {
+    function withdraw() external onlyOwner {
+        if (block.timestamp < end || totalCollected < goal) {
             revert CollectNotFinished();
         }
-        
-        (bool sent,) = msg.sender.call{value: address(this).balance}("");
-        if(!sent) {
+
+        (bool sent, ) = msg.sender.call{value: address(this).balance}("");
+        if (!sent) {
             revert FailedToSendEther();
         }
     }
 
-    function refund() public {
-        if(block.timestamp < end) {
+    function refund() external {
+        if (block.timestamp < end) {
             revert CollectNotFinished();
         }
-        if(totalCollected >= goal) {
-            revert GoalAlreadyReached();
+        if (totalCollected == 0) {
+            revert NotEnoughFunds();
         }
-        if(contributions[msg.sender] == 0) {
+        if (contributions[msg.sender] == 0) {
             revert NoContribution();
         }
-        
+
         uint256 amount = contributions[msg.sender];
         contributions[msg.sender] = 0;
         totalCollected -= amount;
-        (bool sent,) = msg.sender.call{value: amount}("");
-        if(!sent) {
+        (bool sent, ) = msg.sender.call{value: amount}("");
+        if (!sent) {
             revert FailedToSendEther();
         }
     }

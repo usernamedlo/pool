@@ -8,6 +8,7 @@ import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { hardhat } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 const { chains, publicClient } = configureChains(
   [hardhat],
@@ -37,7 +38,9 @@ export default function RootLayout({
       <body>
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider chains={chains}>
-            {children}
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {children}
+            </ThemeProvider>
           </RainbowKitProvider>
         </WagmiConfig>
       </body>

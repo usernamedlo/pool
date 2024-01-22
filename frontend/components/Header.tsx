@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 
@@ -43,8 +44,8 @@ export const Header = async () => {
               <h1 className="text-xl font-bold">PLACEHOLDER</h1>
             </Link>
           </div>
-          <div className="flex items-center gap-3">
-            <nav className="mx-6 items-center space-x-4 lg:space-x-6 hidden md:block">
+          <div className="flex items-center gap-5">
+            <nav className="mx-6 items-center space-x-4 lg:space-x-3 hidden md:block">
               {routes.map((route) => (
                 <Button key={route.key} asChild variant="ghost">
                   <Link
@@ -56,6 +57,7 @@ export const Header = async () => {
                 </Button>
               ))}
             </nav>
+            <ThemeToggle />
             <ConnectButton />
           </div>
         </div>
